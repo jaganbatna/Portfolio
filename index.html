@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Batna Jagan — ML & Data Science</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..900&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0B1220;
+      --bg-panel: #141E33;
+      --line: #27344C;
+      --ink: #E8E9ED;
+      --ink-dim: #8C99B5;
+      --amber: #FF7A3D;
+      --mint: #5FE3B3;
+      --serif: 'Fraunces', serif;
+      --mono: 'IBM Plex Mono', monospace;
+      --body: 'Inter', sans-serif;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--body);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    /* grain texture */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      mix-blend-mode: overlay;
+    }
+
+    .wrap {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    /* ===== NAV ===== */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(11, 18, 32, 0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    nav .wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 64px;
+    }
+
+    .logo {
+      font-family: var(--mono);
+      font-size: 14px;
+      letter-spacing: 0.08em;
+      color: var(--mint);
+    }
+
+    .logo span {
+      color: var(--ink-dim);
+    }
+
+    .navlinks {
+      display: flex;
+      gap: 28px;
+      font-family: var(--mono);
+      font-size: 13px;
+      letter-spacing: 0.05em;
+    }
+
+    .navlinks a {
+      text-decoration: none;
+      color: var(--ink-dim);
+      transition: color .2s;
+    }
+
+    .navlinks a:hover {
+      color: var(--amber);
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      padding: 120px 0 100px;
+      position: relative;
+    }
+
+    .hero-top {
+      display: flex;
+      gap: 48px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .hero-main {
+      flex: 1;
+      min-width: 320px;
+    }
+
+    .avatar {
+      flex-shrink: 0;
+      width: 160px;
+      height: 160px;
+      border-radius: 6px;
+      border: 1px solid var(--line);
+      background: var(--bg-panel);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--serif);
+      font-size: 56px;
+      font-weight: 600;
+      color: var(--mint);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .avatar::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, transparent 40%, rgba(255, 122, 61, 0.12));
+    }
+
+    .avatar-label {
+      position: absolute;
+      bottom: 8px;
+      left: 8px;
+      right: 8px;
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      color: var(--ink-dim);
+      text-align: center;
+      text-transform: uppercase;
+      z-index: 2;
+    }
+
+    @media(max-width:600px) {
+      .avatar {
+        width: 120px;
+        height: 120px;
+        font-size: 40px;
+      }
+    }
+
+    .eyebrow {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--mint);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .eyebrow::before {
+      content: "●";
+      font-size: 10px;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.3;
+      }
+    }
+
+    .hero h1 {
+      font-family: var(--serif);
+      font-weight: 600;
+      font-size: clamp(48px, 8vw, 96px);
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      max-width: 880px;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--amber);
+    }
+
+    .hero .sub {
+      margin-top: 28px;
+      max-width: 560px;
+      font-size: 18px;
+      color: var(--ink-dim);
+    }
+
+    .hero .cta-row {
+      margin-top: 40px;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      font-family: var(--mono);
+      font-size: 13px;
+      letter-spacing: 0.05em;
+      padding: 14px 24px;
+      border-radius: 2px;
+      text-decoration: none;
+      border: 1px solid var(--line);
+      transition: all .25s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: var(--amber);
+      color: var(--bg);
+      border-color: var(--amber);
+      font-weight: 600;
+    }
+
+    .btn-primary:hover {
+      background: #ff9466;
+    }
+
+    .btn-ghost {
+      color: var(--ink);
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--mint);
+      color: var(--mint);
+    }
+
+    /* Diagnostic readout — signature element */
+    .scan {
+      margin-top: 64px;
+      border: 1px solid var(--line);
+      background: var(--bg-panel);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .scan-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--line);
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--ink-dim);
+      letter-spacing: 0.08em;
+    }
+
+    .scan-body {
+      padding: 24px 20px;
+    }
+
+    .scan-row {
+      display: grid;
+      grid-template-columns: 160px 1fr 64px;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 14px;
+      font-family: var(--mono);
+      font-size: 13px;
+    }
+
+    .scan-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .scan-label {
+      color: var(--ink-dim);
+    }
+
+    .bar-track {
+      height: 8px;
+      background: #1E2A42;
+      border-radius: 2px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 2px;
+      width: 0%;
+      transition: width 1.6s cubic-bezier(.16, 1, .3, 1);
+      background: linear-gradient(90deg, var(--mint), var(--amber));
+    }
+
+    .scan-pct {
+      text-align: right;
+      color: var(--ink);
+    }
+
+    /* ===== SECTION HEADERS ===== */
+    section {
+      padding: 90px 0;
+    }
+
+    .sec-head {
+      display: flex;
+      align-items: baseline;
+      gap: 18px;
+      margin-bottom: 56px;
+    }
+
+    .sec-num {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--amber);
+    }
+
+    .sec-head h2 {
+      font-family: var(--serif);
+      font-size: clamp(32px, 5vw, 48px);
+      font-weight: 600;
+    }
+
+    .sec-line {
+      flex: 1;
+      height: 1px;
+      background: var(--line);
+    }
+
+    /* ===== ABOUT ===== */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 60px;
+    }
+
+    .about-text p {
+      color: var(--ink-dim);
+      margin-bottom: 18px;
+      font-size: 16px;
+    }
+
+    .about-text strong {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .stat-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .stat {
+      padding: 20px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .stat:first-child {
+      border-top: 1px solid var(--line);
+    }
+
+    .stat-num {
+      font-family: var(--serif);
+      font-size: 36px;
+      color: var(--mint);
+    }
+
+    .stat-label {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--ink-dim);
+      letter-spacing: 0.05em;
+      margin-top: 4px;
+    }
+
+    /* ===== PROJECTS ===== */
+    .project {
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      margin-bottom: 24px;
+      overflow: hidden;
+      background: var(--bg-panel);
+      transition: border-color .25s;
+    }
+
+    .project:hover {
+      border-color: var(--mint);
+    }
+
+    .project-head {
+      padding: 28px 28px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .project-title {
+      font-family: var(--serif);
+      font-size: 28px;
+      font-weight: 600;
+    }
+
+    .project-meta {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--ink-dim);
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .project-domain {
+      color: var(--amber);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .project-body {
+      padding: 20px 28px 28px;
+    }
+
+    .project-body ul {
+      list-style: none;
+      color: var(--ink-dim);
+      font-size: 15px;
+    }
+
+    .project-body li {
+      position: relative;
+      padding-left: 22px;
+      margin-bottom: 10px;
+    }
+
+    .project-body li::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--mint);
+      font-family: var(--mono);
+    }
+
+    .tag-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    .proj-links {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .proj-link {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--amber);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color .2s;
+    }
+
+    .proj-link:hover {
+      border-color: var(--amber);
+    }
+
+    .tag {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      padding: 5px 10px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      color: var(--ink-dim);
+    }
+
+    /* ===== RESEARCH ===== */
+    .research-card {
+      border: 1px solid var(--amber);
+      border-radius: 4px;
+      padding: 32px;
+      background: linear-gradient(135deg, rgba(255, 122, 61, 0.06), transparent);
+    }
+
+    .research-tag {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--amber);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      display: block;
+    }
+
+    .research-card h3 {
+      font-family: var(--serif);
+      font-size: 24px;
+      font-weight: 600;
+      line-height: 1.4;
+      margin-bottom: 14px;
+      max-width: 680px;
+    }
+
+    .research-card p {
+      color: var(--ink-dim);
+      font-size: 14px;
+      font-family: var(--mono);
+    }
+
+    /* ===== SKILLS ===== */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 40px;
+    }
+
+    .skill-group h4 {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--mint);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .chip {
+      font-family: var(--mono);
+      font-size: 13px;
+      padding: 8px 14px;
+      border: 1px solid var(--line);
+      border-radius: 2px;
+      color: var(--ink);
+    }
+
+    /* ===== CERTS / ACHIEVEMENTS ===== */
+    .cred-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+    }
+
+    .cred {
+      background: var(--bg);
+      padding: 24px 28px;
+    }
+
+    .cred-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .cred-sub {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--ink-dim);
+    }
+
+    /* ===== CONTACT ===== */
+    .contact {
+      text-align: center;
+    }
+
+    .contact h2 {
+      font-family: var(--serif);
+      font-size: clamp(40px, 7vw, 72px);
+      font-weight: 600;
+      margin-bottom: 24px;
+    }
+
+    .contact h2 em {
+      color: var(--amber);
+      font-style: italic;
+      font-weight: 400;
+    }
+
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 36px;
+      flex-wrap: wrap;
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 32px 0;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--ink-dim);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* reveal animation */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+
+    .reveal.in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media(max-width:760px) {
+
+      .about-grid,
+      .skills-grid,
+      .cred-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .navlinks {
+        display: none;
+      }
+
+      .scan-row {
+        grid-template-columns: 100px 1fr 48px;
+        gap: 10px;
+      }
+
+      footer {
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+      }
+    }
+
+    @media(prefers-reduced-motion:reduce) {
+      .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+
+      .bar-fill {
+        transition: none;
+      }
+
+      .eyebrow::before {
+        animation: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <div class="wrap">
+      <div class="logo">JAGAN<span>.BATNA</span></div>
+      <div class="navlinks">
+        <a href="#work">Work</a>
+        <a href="#research">Research</a>
+        <a href="#skills">Skills</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="wrap">
+      <div class="hero-top">
+        <div class="hero-main">
+          <div class="eyebrow">Final-year CSE · Data Science &amp; ML</div>
+          <h1>I build models that turn <em>pixels</em> and data into decisions.</h1>
+          <p class="sub">Batna Jagan — machine learning &amp; computer vision engineer focused on diagnostic AI, applied
+            data science, and shipping models that hold up outside the notebook.</p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="#work">View Projects ↓</a>
+            <a class="btn btn-ghost" href="mailto:jaganbatna20@gmail.com">Get in Touch</a>
+            <a class="btn btn-ghost" href="https://github.com/jaganbatna" target="_blank">GitHub ↗</a>
+            <a class="btn btn-ghost"
+              href="https://drive.google.com/file/d/1FZi30Iy0BLPOPu0bKfFW_NsX1zKofmmI/view?usp=sharing"
+              download>Download Resume ↓</a>
+          </div>
+        </div>
+        <div class="avatar reveal">
+          BJ
+          <div class="avatar-label">Photo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section id="about">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">01</span>
+        <h2>About</h2>
+        <div class="sec-line"></div>
+      </div>
+      <div class="about-text reveal" style="max-width:720px;">
+        <p>I'm a final-year <strong>B.Tech Computer Science &amp; Engineering</strong> student at Lovely Professional
+          University, building toward a career in data science and applied machine learning.</p>
+        <p>My work centers on <strong>computer vision and diagnostic AI</strong> — most recently DermAI, a skin disease
+          pre-diagnosis system fine-tuned on 10,000+ dermatoscopic images, which led to an oral presentation acceptance
+          at an IEEE SSIT co-sponsored conference.</p>
+        <p>Alongside deep learning, I work across the data stack: <strong>EDA, classical ML, BI dashboards, and web
+            scraping pipelines</strong> — recently completing computer vision assignments for an Agri-biotech startup
+          and a fitness-industry data analysis across Bengaluru.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="research">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">02</span>
+        <h2>Research</h2>
+        <div class="sec-line"></div>
+      </div>
+      <div class="research-card reveal">
+        <span class="research-tag">Accepted · Oral Presentation · SASIGD 2026</span>
+        <h3>"Uncertainty-Aware Deep Convolutional Neural Network for Confidence-Driven Skin Lesion Pre-Diagnosis Using
+          Dermatoscopic Images"</h3>
+        <p>International Conference on Sustainable AI for Social Impact and Global Development · CBIT, Hyderabad<br>
+          Co-Sponsored by IEEE SSIT · Paper ID 1726 · Conference Record #68127</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="work">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">03</span>
+        <h2>Selected Work</h2>
+        <div class="sec-line"></div>
+      </div>
+
+      <div class="project reveal">
+        <div class="project-head">
+          <div class="project-title">DermAI — Skin Disease Pre-Diagnosis</div>
+          <div class="project-meta"><span class="project-domain">Deep Learning · Healthcare AI</span>Jan 2026 – Apr 2026
+          </div>
+        </div>
+        <div class="project-body">
+          <ul>
+            <li>Fine-tuned EfficientNet-B0 on HAM10000 (10,000+ dermoscopic images) to classify 7 skin disease types,
+              using softmax entropy for prediction confidence scoring.</li>
+            <li>Implemented Bayesian-inspired symptom-image fusion — adaptive clinical questions triggered on uncertain
+              predictions, combined with image confidence to improve accuracy.</li>
+            <li>Deployed a production REST API via FastAPI on Hugging Face Spaces, with a GitHub Pages frontend and
+              OpenStreetMap integration for location-aware dermatologist recommendations.</li>
+          </ul>
+          <div class="tag-row">
+            <span class="tag">Python</span><span class="tag">TensorFlow</span><span class="tag">FastAPI</span><span
+              class="tag">EfficientNet</span><span class="tag">Hugging Face Spaces</span>
+          </div>
+          <div class="proj-links">
+            <a class="proj-link"
+              href="https://jaganbatna.github.io/confidence-aware-skin-prediagnosis/Frontend/index.html"
+              target="_blank">Live Demo ↗</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project reveal">
+        <div class="project-head">
+          <div class="project-title">App Recommendation System</div>
+          <div class="project-meta"><span class="project-domain">Machine Learning</span>Nov 2025 – Dec 2025</div>
+        </div>
+        <div class="project-body">
+          <ul>
+            <li>Built a K-Nearest Neighbors recommendation model that suggests apps based on user preferences and app
+              attributes.</li>
+            <li>Cleaned, preprocessed, and engineered features across thousands of Play Store app records to boost
+              recommendation relevance and model accuracy.</li>
+            <li>Ran EDA and produced 5+ visualizations of category themes, rating distributions, and feature
+              correlations to improve model interpretability.</li>
+          </ul>
+          <div class="tag-row">
+            <span class="tag">Python</span><span class="tag">Scikit-learn</span><span class="tag">Matplotlib</span><span
+              class="tag">KNN</span>
+          </div>
+          <div class="proj-links">
+            <a class="proj-link" href="https://github.com/jaganbatna/App-Recommendation-Using-KNN" target="_blank">View
+              on GitHub ↗</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project reveal">
+        <div class="project-head">
+          <div class="project-title">Amazon Sales Analysis Dashboard</div>
+          <div class="project-meta"><span class="project-domain">Business Intelligence</span>Sep 2025 – Oct 2026</div>
+        </div>
+        <div class="project-body">
+          <ul>
+            <li>Built a Power BI dashboard analyzing Amazon product sales, ratings, discounts, and customer reviews in
+              one place.</li>
+            <li>Cleaned and transformed raw data with Power Query and created DAX measures to surface top products,
+              average ratings, and discount trends.</li>
+            <li>Added interactive charts, filters, and slicers so users could quickly identify best-performing
+              categories.</li>
+          </ul>
+          <div class="tag-row">
+            <span class="tag">Power BI</span><span class="tag">Power Query</span><span class="tag">DAX</span>
+          </div>
+          <div class="proj-links">
+            <a class="proj-link" href="https://github.com/jaganbatna/Amazon-Sales-PowerBI" target="_blank">View on
+              GitHub ↗</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">04</span>
+        <h2>Skills</h2>
+        <div class="sec-line"></div>
+      </div>
+      <div class="skills-grid">
+        <div class="skill-group reveal">
+          <h4>Languages &amp; Core</h4>
+          <div class="chip-row">
+            <span class="chip">Python</span><span class="chip">SQL</span><span class="chip">HTML / CSS</span><span
+              class="chip">Prompt Engineering</span><span class="chip">Reinforcement Learning</span>
+          </div>
+        </div>
+        <div class="skill-group reveal">
+          <h4>Libraries &amp; Frameworks</h4>
+          <div class="chip-row">
+            <span class="chip">NumPy</span><span class="chip">Pandas</span><span class="chip">Matplotlib</span><span
+              class="chip">Seaborn</span><span class="chip">TensorFlow</span><span class="chip">NLP</span><span
+              class="chip">Tkinter</span>
+          </div>
+        </div>
+        <div class="skill-group reveal">
+          <h4>Tools &amp; Platforms</h4>
+          <div class="chip-row">
+            <span class="chip">GitHub</span><span class="chip">Tableau</span><span class="chip">Power BI</span><span
+              class="chip">Excel</span>
+          </div>
+        </div>
+        <div class="skill-group reveal">
+          <h4>Working Style</h4>
+          <div class="chip-row">
+            <span class="chip">Flexibility</span><span class="chip">Team Collaboration</span><span class="chip">Task
+              Prioritization</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="certificates">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">05</span>
+        <h2>Certificates</h2>
+        <div class="sec-line"></div>
+      </div>
+      <div class="cred-grid reveal">
+        <div class="cred">
+          <div class="cred-title">Foundations: Data, Data, Everywhere</div>
+          <div class="cred-sub">Google · May 2026</div>
+        </div>
+        <div class="cred">
+          <div class="cred-title">Data Analytics Job Simulation</div>
+          <div class="cred-sub">Deloitte Australia / Forage · Oct 2025</div>
+        </div>
+        <div class="cred">
+          <div class="cred-title">Exploratory Data Analysis for ML</div>
+          <div class="cred-sub">IBM · Sep 2025</div>
+        </div>
+        <div class="cred">
+          <div class="cred-title">Machine Learning &amp; Its Applications</div>
+          <div class="cred-sub">iHUB Divya Sampark · Feb 2023</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="achievements">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">06</span>
+        <h2>Achievements</h2>
+        <div class="sec-line"></div>
+      </div>
+      <div class="cred-grid reveal">
+        <div class="cred">
+          <div class="cred-title">SQL 50 Challenge — Cleared</div>
+          <div class="cred-sub">LeetCode · Feb 2025</div>
+        </div>
+        <div class="cred">
+          <div class="cred-title">3-Star Python Coder</div>
+          <div class="cred-sub">HackerRank · Mar 2024</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="wrap contact">
+      <div class="sec-head" style="justify-content:center;"><span class="sec-num">07</span>
+        <h2>Contact</h2>
+        <div class="sec-line"></div>
+      </div>
+      <h2 class="reveal">Let's build something <em>intelligent</em>.</h2>
+      <p style="color:var(--ink-dim); max-width:480px; margin:0 auto;">Open to data science and ML internships / roles.
+        Reach out by email or connect on LinkedIn.</p>
+      <div class="contact-links reveal">
+        <a class="btn btn-primary" href="mailto:jaganbatna20@gmail.com">jaganbatna20@gmail.com</a>
+        <a class="btn btn-ghost" href="http://www.linkedin.com/in/jagan-batna" target="_blank">LinkedIn ↗</a>
+        <a class="btn btn-ghost" href="https://github.com/jaganbatna" target="_blank">GitHub ↗</a>
+        <a class="btn btn-ghost" href="https://leetcode.com/u/jaganbatna" target="_blank">LeetCode ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap" style="display:flex; justify-content:space-between; width:100%;">
+      <span>© 2026 Batna Jagan</span>
+      <span>+91-7075049918</span>
+    </div>
+  </footer>
+
+  <script>
+    const reveals = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('in');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    reveals.forEach(r => io.observe(r));
+  </script>
+
+</body>
+
+</html>
